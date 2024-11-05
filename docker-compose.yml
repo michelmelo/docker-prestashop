@@ -1,0 +1,34 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: prestashop
+      MYSQL_USER: prestashop
+      MYSQL_PASSWORD: Password123!!
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: Password123!
+      MYSQL_ROOT_HOST: localhost
+    ports:
+      - 3306:3306
+    networks:
+      - prestashop_net
+
+  prestashop:
+    image: prestashop/prestashop:8.1
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - ./modules/modulo:/var/www/html/modules/modulo
+    environment:
+      DB_SERVER: mysql
+      DB_NAME: prestashop
+      DB_USER: prestashop
+      DB_PASSWD: Password123!
+    networks:
+      - prestashop_net
+
+networks:
+  prestashop_net:
